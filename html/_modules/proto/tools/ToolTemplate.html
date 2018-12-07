@@ -1,0 +1,609 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>proto.tools.ToolTemplate &#8212; Galaxy ProTo 1.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../../../index.html">
+          <span>Galaxy ProTo 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>proto.tools.ToolTemplate</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for proto.tools.ToolTemplate</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">proto.tools.GeneralGuiTool</span> <span class="k">import</span> <span class="n">GeneralGuiTool</span>
+
+
+<div class="viewcode-block" id="ToolTemplate"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate">[docs]</a><span class="k">class</span> <span class="nc">ToolTemplate</span><span class="p">(</span><span class="n">GeneralGuiTool</span><span class="p">):</span>
+<div class="viewcode-block" id="ToolTemplate.getToolName"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getToolName">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getToolName</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies a header of the tool, which is displayed at the top of the</span>
+<span class="sd">        page.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            Yes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Tool not yet in use&quot;</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getInputBoxNames"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInputBoxNames</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies a list of headers for the input boxes, and implicitly also</span>
+<span class="sd">        the number of input boxes to display on the page. The returned list</span>
+<span class="sd">        can have two syntaxes:</span>
+
+<span class="sd">            1) A list of tuples of strings, where each tuple has</span>
+<span class="sd">               two items: a header and a key.</span>
+<span class="sd">            2) A simple list of strings denoting the headers for the input</span>
+<span class="sd">               boxes in numerical order. [Deprecated]</span>
+
+<span class="sd">        The contents of each input box must be defined by the function</span>
+<span class="sd">        getOptionsBoxK, where K is the specified key (case 1).</span>
+
+<span class="sd">        *Note*:</span>
+<span class="sd">            the key has to be camelCase and start with a non-capital letter</span>
+<span class="sd">            (e.g. &quot;firstKey&quot;)</span>
+<span class="sd">        *Note 2*:</span>
+<span class="sd">            Case 2 above, which uses indexes, is deprecated and will not be</span>
+<span class="sd">            discussed further in this documentation.</span>
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            []</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;First header&#39;</span><span class="p">,</span> <span class="s1">&#39;firstKey&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;Second Header&#39;</span><span class="p">,</span> <span class="s1">&#39;secondKey&#39;</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getInputBoxOrder"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getInputBoxOrder">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInputBoxOrder</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies the order in which the input boxes should be displayed,</span>
+<span class="sd">        as a list. The input boxes are specified by index (starting with 1)</span>
+<span class="sd">        or by key. If None, the order of the input boxes is in the order</span>
+<span class="sd">        specified by :py:meth:`getInputBoxNames()`.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getInputBoxGroups"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getInputBoxGroups">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInputBoxGroups</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a visual separation of groups of consecutive option boxes</span>
+<span class="sd">        from the rest (fieldset). Each such group has an associated label</span>
+<span class="sd">        (string), which is shown to the user. To define groups of option</span>
+<span class="sd">        boxes, return a list of BoxGroup namedtuples with the label, the key</span>
+<span class="sd">        (or index) of the first and last options boxes (inclusive).</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">           from proto.tools.GeneralGuiTool import BoxGroup</span>
+<span class="sd">           return [BoxGroup(label=&#39;A group of choices&#39;, first=&#39;firstKey&#39;,</span>
+<span class="sd">                            last=&#39;secondKey&#39;)]</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getOptionsBoxFirstKey"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getOptionsBoxFirstKey">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getOptionsBoxFirstKey</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>  <span class="c1"># Alt: getOptionsBox1()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For all the keys defined in :py:meth:`getInputBoxNames()`, the Galaxy</span>
+<span class="sd">        ProTo parser looks for a class method named::</span>
+
+<span class="sd">            getOptionsBox + key.capitalize()</span>
+
+<span class="sd">        The Python object that is returned by such a method defines the type</span>
+<span class="sd">        and contents of the corresponding input box in the GUI. The specific</span>
+<span class="sd">        user selections are then provided to other methods in the prevChoices</span>
+<span class="sd">        or choices parameters. This is a namedtuple object which can be</span>
+<span class="sd">        accessed by key (recommended) or index (in the order specified by</span>
+<span class="sd">        :py:meth:`getInputBoxOrder()`), e.g.::</span>
+
+<span class="sd">            choices.firstKey</span>
+<span class="sd">            choices[0]</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            Yes, for the first key defined in</span>
+<span class="sd">            :py:meth:`getInputBoxNames()`, if any.</span>
+
+<span class="sd">        Here follows an overview of the different GUI elements, together with</span>
+<span class="sd">        an example of the Python syntax that needs to be returned by this to</span>
+<span class="sd">        trigger the element, and the type of the user selection value present</span>
+<span class="sd">        in choices/prevchoices:</span>
+
+<span class="sd">        * *Check box*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                False | True</span>
+
+<span class="sd">            * Prevchoices/choices type::</span>
+
+<span class="sd">                bool</span>
+
+<span class="sd">        * *Selection box*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                [&#39;choice1&#39;, &#39;choice2&#39;]</span>
+
+<span class="sd">            * Prevchoices/choices type::</span>
+
+<span class="sd">                string</span>
+
+<span class="sd">        * *Text area*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                &#39;textbox&#39; | (&#39;textbox&#39;, 1) | (&#39;textbox&#39;, 1, False)</span>
+
+<span class="sd">            * Tuple elements:</span>
+
+<span class="sd">                1. contents:</span>
+
+<span class="sd">                    the default value shown inside the text area</span>
+
+<span class="sd">                2. height (default: 1):</span>
+
+<span class="sd">                    the number of lines of the text box</span>
+
+<span class="sd">                3. read only flag (default: False):</span>
+
+<span class="sd">                    whether the text box will allow user input</span>
+
+<span class="sd">            * Prevchoices/choices type::</span>
+
+<span class="sd">                string</span>
+
+<span class="sd">        * *Raw HTML code*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                &#39;__rawstr__&#39;, &#39;HTML code&#39;</span>
+
+<span class="sd">            * Note:</span>
+
+<span class="sd">                This is mainly intended for read only usage. Even though more</span>
+<span class="sd">                advanced hacks are possible, it is discouraged.</span>
+
+<span class="sd">        * *Password field*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                &#39;__password__&#39;</span>
+
+<span class="sd">            * Prevchoices/choices type::</span>
+
+<span class="sd">                string</span>
+
+<span class="sd">        * *Genome selection box*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                &#39;__genome__&#39;</span>
+
+<span class="sd">            * Prevchoices/choices type::</span>
+
+<span class="sd">                string</span>
+
+<span class="sd">        * *History selection box*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                (&#39;__history__&#39;,) | (&#39;__history__&#39;, &#39;bed&#39;, &#39;wig&#39;)</span>
+
+<span class="sd">            * Note:</span>
+
+<span class="sd">                Only history items of specified types are shown.</span>
+
+<span class="sd">            * Prevchoices/choices type:</span>
+
+<span class="sd">                colon-separated string denoting Galaxy dataset info, as</span>
+<span class="sd">                described below.</span>
+
+<span class="sd">        * *History check box list*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                (&#39;__multihistory__&#39;, ) | (&#39;__multihistory__&#39;, &#39;bed&#39;, &#39;wig&#39;)</span>
+
+<span class="sd">            * Note:</span>
+
+<span class="sd">                Only history items of specified types are shown.</span>
+
+<span class="sd">            * Prevchoices/choices type:</span>
+
+<span class="sd">                OrderedDict with Galaxy dataset ids as key (the number YYYY</span>
+<span class="sd">                as described below), and the associated Galaxy dataset info as</span>
+<span class="sd">                the values, given that the history element is ticked off by the</span>
+<span class="sd">                user. If not, the value is set to None. The Galaxy dataset info</span>
+<span class="sd">                structure is described below.</span>
+
+<span class="sd">        * *Hidden field*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                (&#39;__hidden__&#39;, &#39;Hidden value&#39;)</span>
+
+<span class="sd">            * Prevchoices/choices type::</span>
+
+<span class="sd">                string</span>
+
+<span class="sd">        * *Table*:</span>
+<span class="sd">            * Syntax::</span>
+
+<span class="sd">                [[&#39;header1&#39;,&#39;header2&#39;],</span>
+<span class="sd">                 [&#39;cell1_1&#39;,&#39;cell1_2&#39;],</span>
+<span class="sd">                 [&#39;cell2_1&#39;,&#39;cell2_2&#39;]]</span>
+
+<span class="sd">            * Prevchoices/choices type::</span>
+
+<span class="sd">                None</span>
+
+<span class="sd">        * *Check box list*:</span>
+<span class="sd">            * Syntax:</span>
+
+<span class="sd">                OrderedDict([(&#39;key1&#39;, True),</span>
+<span class="sd">                             (&#39;key2&#39;, False),</span>
+<span class="sd">                             (&#39;key3&#39;, False)])</span>
+
+<span class="sd">            * Prevchoices/choices type:</span>
+
+<span class="sd">                OrderedDict from key to selection status (bool).</span>
+
+<span class="sd">        **Note about the &quot;Galaxy dataset info&quot; data structure**</span>
+
+<span class="sd">        &quot;Galaxy dataset info&quot; is a list of strings coding information about a</span>
+<span class="sd">        Galaxy history element and its associated dataset, typically used to</span>
+<span class="sd">        provide info on the history element selected by the user as input to a</span>
+<span class="sd">        ProTo tool.</span>
+
+<span class="sd">        Structure::</span>
+
+<span class="sd">            [&#39;galaxy&#39;, fileFormat, path, name]</span>
+
+<span class="sd">        Optionally encoded as a single string, delineated by colon::</span>
+
+<span class="sd">            &#39;galaxy:fileFormat:path:name&#39;</span>
+
+<span class="sd">        Where:</span>
+<span class="sd">            * *&#39;galaxy&#39;* is used for assertions in the code</span>
+<span class="sd">            * *fileFormat* (or suffix) contains the file format of the dataset,</span>
+<span class="sd">              as encoded in the &#39;format&#39; field of a Galaxy history element.</span>
+<span class="sd">            * *path* (or file name/fn) is the disk path to the dataset file.</span>
+<span class="sd">              Typically ends with &#39;XXX/dataset_YYYY.dat&#39;. XXX and YYYY are</span>
+<span class="sd">              numbers which are extracted and used as an unique id  of the</span>
+<span class="sd">              dataset in the form [XXX, YYYY]</span>
+<span class="sd">            * *name* is the title of the history element</span>
+
+<span class="sd">        The different parts can be extracted using the functions</span>
+<span class="sd">        :py:func:`proto.CommonFunctions.extractFileSuffixFromDatasetInfo()`,</span>
+<span class="sd">        :py:func:`proto.CommonFunctions.extractFnFromDatasetInfo()`, and</span>
+<span class="sd">        :py:func:`proto.CommonFunctions.extractNameFromDatasetInfo()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;testChoice1&#39;</span><span class="p">,</span> <span class="s1">&#39;testChoice2&#39;</span><span class="p">,</span> <span class="s1">&#39;...&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getOptionsBoxSecondKey"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getOptionsBoxSecondKey">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getOptionsBoxSecondKey</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">prevChoices</span><span class="p">):</span>  <span class="c1"># Alt: getOptionsBox2()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        See :py:meth:`getOptionsBoxFirstKey()`.</span>
+
+<span class="sd">        prevChoices is a namedtuple of selections made by the user in the</span>
+<span class="sd">        previous input boxes (that is, a namedtuple containing only one element</span>
+<span class="sd">        in this case). The elements can accessed either by key (recommended)</span>
+<span class="sd">        or index, e.g.::</span>
+
+<span class="sd">            prevChoices.firstKey</span>
+<span class="sd">            prevChoices[0]</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            Yes, for the subsequent keys (after the first key) defined in</span>
+<span class="sd">            :py:meth:`getInputBoxNames()`, if any.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getInfoForOptionsBoxKey"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getInfoForOptionsBoxKey">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getInfoForOptionsBoxKey</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">prevChoices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If not None, defines the string content of an clickable info box</span>
+<span class="sd">        beside the corresponding input box. HTML is allowed.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getDemoSelections"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getDemoSelections">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getDemoSelections</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Defines a set of demo inputs to the option boxes in the</span>
+<span class="sd">        order defined by getOptionBoxNames and getOptionsBoxOrder.</span>
+<span class="sd">        If not None, a Demo button appears in the interface. Clicking the</span>
+<span class="sd">        button fills the option boxed with the defined demo values.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;testChoice1&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getExtraHistElements"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getExtraHistElements">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getExtraHistElements</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">choices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Defines extra history elements to be created when clicking execute.</span>
+<span class="sd">        This is defined by a list of</span>
+<span class="sd">        :py:class:`proto.tools.GeneralGuiTool.HistElement` objects, as in the</span>
+<span class="sd">        following example::</span>
+
+<span class="sd">           from proto.tools.GeneralGuiTool import HistElement</span>
+<span class="sd">           return [HistElement(cls.HISTORY_TITLE, &#39;bed&#39;, hidden=False)]</span>
+
+<span class="sd">        It is good practice to use class constants for longer strings.</span>
+
+<span class="sd">        In the execute() method, one typically needs to fetch the path to</span>
+<span class="sd">        the dataset referred to by the extra history element. To fetch the</span>
+<span class="sd">        path, use the dict cls.extraGalaxyFn with the defined history title</span>
+<span class="sd">        as key, e.g.::</span>
+
+<span class="sd">            cls.extraGalaxyFn[cls.HISTORY_TITLE]</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.execute"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.execute">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">galaxyFn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Is called when execute-button is pushed by web-user. Should print</span>
+<span class="sd">        output as HTML to standard out, which will be directed to a results</span>
+<span class="sd">        page in Galaxy history. If getOutputFormat is anything else than</span>
+<span class="sd">        &#39;html&#39;, the output should be written to the file with path galaxyFn.</span>
+<span class="sd">        If needed, StaticFile can be used to get a path where additional</span>
+<span class="sd">        files can be put (cls, e.g. generated image files). choices is a list</span>
+<span class="sd">        of selections made by web-user in each options box.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            Yes, unless :py:meth:`isRedirectTool()` returns True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span> <span class="s1">&#39;Executing...&#39;</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.validateAndReturnErrors"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.validateAndReturnErrors">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validateAndReturnErrors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">choices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Should validate the selected input parameters. If the parameters are</span>
+<span class="sd">        not valid, an error text explaining the problem should be returned.</span>
+<span class="sd">        The GUI then shows this text to the user (if not empty) and greys</span>
+<span class="sd">        out the execute button (even if the text is empty). If all</span>
+<span class="sd">        parameters are valid, the method should return None, which enables</span>
+<span class="sd">        the execute button.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getSubToolClasses"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getSubToolClasses">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getSubToolClasses</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies a list of classes for subtools of the main tool. These</span>
+<span class="sd">        subtools will be selectable from a selection box at the top of the</span>
+<span class="sd">        page. The input boxes will change according to which subtool is</span>
+<span class="sd">        selected.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.isPublic"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.isPublic">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">isPublic</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies whether the tool is accessible to all users. If False, the</span>
+<span class="sd">        tool is only accessible to a restricted set of users as well as admin</span>
+<span class="sd">        users, as defined in the galaxy.ini file.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.isRedirectTool"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.isRedirectTool">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">isRedirectTool</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies whether the tool should redirect to an URL when the Execute</span>
+<span class="sd">        button is clicked.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getRedirectURL"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getRedirectURL">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getRedirectURL</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">choices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is called to return an URL if the isRedirectTool method</span>
+<span class="sd">        returns True.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            Yes, if :py:meth:`isRedirectTool()` returns True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.isHistoryTool"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.isHistoryTool">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">isHistoryTool</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies if a History item should be created when the Execute button</span>
+<span class="sd">        is clicked.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.isDynamic"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.isDynamic">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">isDynamic</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies whether changing the content of textboxes causes the page</span>
+<span class="sd">        to reload. Returning False stops the need for reloading the tool</span>
+<span class="sd">        after each input, resulting in less lags for the user.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getResetBoxes"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getResetBoxes">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getResetBoxes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies a list of input boxes which resets the subsequent stored</span>
+<span class="sd">        choices previously made. The input boxes are specified by index</span>
+<span class="sd">        (starting with 1) or by key.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            []</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getToolDescription"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getToolDescription">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getToolDescription</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies a help text in HTML that is displayed below the tool.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            &#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getToolIllustration"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getToolIllustration">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getToolIllustration</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies an id used by StaticFile.py to reference an illustration</span>
+<span class="sd">        file on disk. The id is a list of optional directory names followed</span>
+<span class="sd">        by a filename. The base directory is STATIC_PATH as defined by</span>
+<span class="sd">        Config.py. The full path is created from the base directory</span>
+<span class="sd">        followed by the id.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getFullExampleURL"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getFullExampleURL">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getFullExampleURL</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies an URL to an example page that describes the tool, for</span>
+<span class="sd">        instance a Galaxy page.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.isDebugMode"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.isDebugMode">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">isDebugMode</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Specifies whether the debug mode is turned on. Debug mode is</span>
+<span class="sd">        currently mostly used within the Genomic HyperBrowser and will make</span>
+<span class="sd">        little difference in a plain Galaxy ProTo installation.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getOutputFormat"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getOutputFormat">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getOutputFormat</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">choices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The format of the history element with the output of the tool. Note</span>
+<span class="sd">        that if &#39;html&#39; is returned, any print statements in the execute()</span>
+<span class="sd">        method is printed to the output dataset. For text-based output</span>
+<span class="sd">        (e.g. bed) the output dataset only contains text written to the</span>
+<span class="sd">        galaxyFn file, while all print statements are redirected to the info</span>
+<span class="sd">        field of the history item box.</span>
+
+<span class="sd">        Note that for &#39;html&#39; output, standard HTML header and footer code is</span>
+<span class="sd">        added to the output dataset. If one wants to write the complete HTML</span>
+<span class="sd">        page, use the restricted output format &#39;customhtml&#39; instead.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            &#39;html&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;html&#39;</span></div>
+
+<div class="viewcode-block" id="ToolTemplate.getOutputName"><a class="viewcode-back" href="../../../proto.tools.ToolTemplate.html#proto.tools.ToolTemplate.ToolTemplate.getOutputName">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">getOutputName</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The title (name) of the main output history element.</span>
+
+<span class="sd">        *Mandatory method*:</span>
+<span class="sd">            No</span>
+<span class="sd">        *Default return value (if method is not defined)*:</span>
+<span class="sd">            The name of the tool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">getToolSelectionName</span><span class="p">()</span></div></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Morten Johansen, Sveinung Gundersen, Geir Kjetil Sandve.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>

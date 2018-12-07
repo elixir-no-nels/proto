@@ -1,0 +1,717 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>proto.tools.ToolTemplate module &#8212; Galaxy ProTo 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>Galaxy ProTo 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>proto.tools.ToolTemplate module</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="module-proto.tools.ToolTemplate">
+<span id="proto-tools-tooltemplate-module"></span><h1>proto.tools.ToolTemplate module<a class="headerlink" href="#module-proto.tools.ToolTemplate" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="proto.tools.ToolTemplate.ToolTemplate">
+<em class="property">class </em><code class="descclassname">proto.tools.ToolTemplate.</code><code class="descname">ToolTemplate</code><span class="sig-paren">(</span><em>toolId=None</em>, <em>conda_activate_source=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">proto.tools.GeneralGuiTool.GeneralGuiTool</span></code></p>
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getToolName">
+<em class="property">classmethod </em><code class="descname">getToolName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getToolName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getToolName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a header of the tool, which is displayed at the top of the
+page.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>Yes</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames">
+<em class="property">classmethod </em><code class="descname">getInputBoxNames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getInputBoxNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a list of headers for the input boxes, and implicitly also
+the number of input boxes to display on the page. The returned list
+can have two syntaxes:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>A list of tuples of strings, where each tuple has
+two items: a header and a key.</li>
+<li>A simple list of strings denoting the headers for the input
+boxes in numerical order. [Deprecated]</li>
+</ol>
+</div></blockquote>
+<p>The contents of each input box must be defined by the function
+getOptionsBoxK, where K is the specified key (case 1).</p>
+<dl class="docutils">
+<dt><em>Note</em>:</dt>
+<dd>the key has to be camelCase and start with a non-capital letter
+(e.g. “firstKey”)</dd>
+<dt><em>Note 2</em>:</dt>
+<dd>Case 2 above, which uses indexes, is deprecated and will not be
+discussed further in this documentation.</dd>
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>[]</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getInputBoxOrder">
+<em class="property">classmethod </em><code class="descname">getInputBoxOrder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getInputBoxOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getInputBoxOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the order in which the input boxes should be displayed,
+as a list. The input boxes are specified by index (starting with 1)
+or by key. If None, the order of the input boxes is in the order
+specified by <a class="reference internal" href="#proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames" title="proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getInputBoxNames()</span></code></a>.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getInputBoxGroups">
+<em class="property">classmethod </em><code class="descname">getInputBoxGroups</code><span class="sig-paren">(</span><em>choices=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getInputBoxGroups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getInputBoxGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a visual separation of groups of consecutive option boxes
+from the rest (fieldset). Each such group has an associated label
+(string), which is shown to the user. To define groups of option
+boxes, return a list of BoxGroup namedtuples with the label, the key
+(or index) of the first and last options boxes (inclusive).</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">proto.tools.GeneralGuiTool</span> <span class="k">import</span> <span class="n">BoxGroup</span>
+<span class="k">return</span> <span class="p">[</span><span class="n">BoxGroup</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;A group of choices&#39;</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="s1">&#39;firstKey&#39;</span><span class="p">,</span>
+                 <span class="n">last</span><span class="o">=</span><span class="s1">&#39;secondKey&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getOptionsBoxFirstKey">
+<em class="property">classmethod </em><code class="descname">getOptionsBoxFirstKey</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getOptionsBoxFirstKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getOptionsBoxFirstKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>For all the keys defined in <a class="reference internal" href="#proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames" title="proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getInputBoxNames()</span></code></a>, the Galaxy
+ProTo parser looks for a class method named:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getOptionsBox</span> <span class="o">+</span> <span class="n">key</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The Python object that is returned by such a method defines the type
+and contents of the corresponding input box in the GUI. The specific
+user selections are then provided to other methods in the prevChoices
+or choices parameters. This is a namedtuple object which can be
+accessed by key (recommended) or index (in the order specified by
+<a class="reference internal" href="#proto.tools.ToolTemplate.ToolTemplate.getInputBoxOrder" title="proto.tools.ToolTemplate.ToolTemplate.getInputBoxOrder"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getInputBoxOrder()</span></code></a>), e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">choices</span><span class="o">.</span><span class="n">firstKey</span>
+<span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>Yes, for the first key defined in
+<a class="reference internal" href="#proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames" title="proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getInputBoxNames()</span></code></a>, if any.</dd>
+</dl>
+<p>Here follows an overview of the different GUI elements, together with
+an example of the Python syntax that needs to be returned by this to
+trigger the element, and the type of the user selection value present
+in choices/prevchoices:</p>
+<ul>
+<li><dl class="first docutils">
+<dt><em>Check box</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kc">False</span> <span class="o">|</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bool</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Selection box</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;choice1&#39;</span><span class="p">,</span> <span class="s1">&#39;choice2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">string</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Text area</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;textbox&#39;</span> <span class="o">|</span> <span class="p">(</span><span class="s1">&#39;textbox&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="s1">&#39;textbox&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Tuple elements:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">contents:</p>
+<blockquote>
+<div><p>the default value shown inside the text area</p>
+</div></blockquote>
+</li>
+<li><p class="first">height (default: 1):</p>
+<blockquote>
+<div><p>the number of lines of the text box</p>
+</div></blockquote>
+</li>
+<li><p class="first">read only flag (default: False):</p>
+<blockquote>
+<div><p>whether the text box will allow user input</p>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">string</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Raw HTML code</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;__rawstr__&#39;</span><span class="p">,</span> <span class="s1">&#39;HTML code&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Note:</p>
+<blockquote>
+<div><p>This is mainly intended for read only usage. Even though more
+advanced hacks are possible, it is discouraged.</p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Password field</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;__password__&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">string</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Genome selection box</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;__genome__&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">string</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>History selection box</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;__history__&#39;</span><span class="p">,)</span> <span class="o">|</span> <span class="p">(</span><span class="s1">&#39;__history__&#39;</span><span class="p">,</span> <span class="s1">&#39;bed&#39;</span><span class="p">,</span> <span class="s1">&#39;wig&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Note:</p>
+<blockquote>
+<div><p>Only history items of specified types are shown.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<blockquote>
+<div><p>colon-separated string denoting Galaxy dataset info, as
+described below.</p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>History check box list</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;__multihistory__&#39;</span><span class="p">,</span> <span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="s1">&#39;__multihistory__&#39;</span><span class="p">,</span> <span class="s1">&#39;bed&#39;</span><span class="p">,</span> <span class="s1">&#39;wig&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Note:</p>
+<blockquote>
+<div><p>Only history items of specified types are shown.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<blockquote>
+<div><p>OrderedDict with Galaxy dataset ids as key (the number YYYY
+as described below), and the associated Galaxy dataset info as
+the values, given that the history element is ticked off by the
+user. If not, the value is set to None. The Galaxy dataset info
+structure is described below.</p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Hidden field</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;__hidden__&#39;</span><span class="p">,</span> <span class="s1">&#39;Hidden value&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">string</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Table</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="s1">&#39;header1&#39;</span><span class="p">,</span><span class="s1">&#39;header2&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;cell1_1&#39;</span><span class="p">,</span><span class="s1">&#39;cell1_2&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;cell2_1&#39;</span><span class="p">,</span><span class="s1">&#39;cell2_2&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kc">None</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><em>Check box list</em>:</dt>
+<dd><ul class="first last">
+<li><p class="first">Syntax:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>OrderedDict([(‘key1’, True),</dt>
+<dd><p class="first last">(‘key2’, False),
+(‘key3’, False)])</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p class="first">Prevchoices/choices type:</p>
+<blockquote>
+<div><p>OrderedDict from key to selection status (bool).</p>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Note about the “Galaxy dataset info” data structure</strong></p>
+<p>“Galaxy dataset info” is a list of strings coding information about a
+Galaxy history element and its associated dataset, typically used to
+provide info on the history element selected by the user as input to a
+ProTo tool.</p>
+<p>Structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;galaxy&#39;</span><span class="p">,</span> <span class="n">fileFormat</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Optionally encoded as a single string, delineated by colon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;galaxy:fileFormat:path:name&#39;</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Where:</dt>
+<dd><ul class="first last simple">
+<li><em>‘galaxy’</em> is used for assertions in the code</li>
+<li><em>fileFormat</em> (or suffix) contains the file format of the dataset,
+as encoded in the ‘format’ field of a Galaxy history element.</li>
+<li><em>path</em> (or file name/fn) is the disk path to the dataset file.
+Typically ends with ‘XXX/dataset_YYYY.dat’. XXX and YYYY are
+numbers which are extracted and used as an unique id  of the
+dataset in the form [XXX, YYYY]</li>
+<li><em>name</em> is the title of the history element</li>
+</ul>
+</dd>
+</dl>
+<p>The different parts can be extracted using the functions
+<a class="reference internal" href="proto.CommonFunctions.html#proto.CommonFunctions.extractFileSuffixFromDatasetInfo" title="proto.CommonFunctions.extractFileSuffixFromDatasetInfo"><code class="xref py py-func docutils literal notranslate"><span class="pre">proto.CommonFunctions.extractFileSuffixFromDatasetInfo()</span></code></a>,
+<a class="reference internal" href="proto.CommonFunctions.html#proto.CommonFunctions.extractFnFromDatasetInfo" title="proto.CommonFunctions.extractFnFromDatasetInfo"><code class="xref py py-func docutils literal notranslate"><span class="pre">proto.CommonFunctions.extractFnFromDatasetInfo()</span></code></a>, and
+<a class="reference internal" href="proto.CommonFunctions.html#proto.CommonFunctions.extractNameFromDatasetInfo" title="proto.CommonFunctions.extractNameFromDatasetInfo"><code class="xref py py-func docutils literal notranslate"><span class="pre">proto.CommonFunctions.extractNameFromDatasetInfo()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getOptionsBoxSecondKey">
+<em class="property">classmethod </em><code class="descname">getOptionsBoxSecondKey</code><span class="sig-paren">(</span><em>prevChoices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getOptionsBoxSecondKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getOptionsBoxSecondKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#proto.tools.ToolTemplate.ToolTemplate.getOptionsBoxFirstKey" title="proto.tools.ToolTemplate.ToolTemplate.getOptionsBoxFirstKey"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getOptionsBoxFirstKey()</span></code></a>.</p>
+<p>prevChoices is a namedtuple of selections made by the user in the
+previous input boxes (that is, a namedtuple containing only one element
+in this case). The elements can accessed either by key (recommended)
+or index, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">prevChoices</span><span class="o">.</span><span class="n">firstKey</span>
+<span class="n">prevChoices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>Yes, for the subsequent keys (after the first key) defined in
+<a class="reference internal" href="#proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames" title="proto.tools.ToolTemplate.ToolTemplate.getInputBoxNames"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getInputBoxNames()</span></code></a>, if any.</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getInfoForOptionsBoxKey">
+<em class="property">classmethod </em><code class="descname">getInfoForOptionsBoxKey</code><span class="sig-paren">(</span><em>prevChoices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getInfoForOptionsBoxKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getInfoForOptionsBoxKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>If not None, defines the string content of an clickable info box
+beside the corresponding input box. HTML is allowed.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getDemoSelections">
+<em class="property">classmethod </em><code class="descname">getDemoSelections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getDemoSelections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getDemoSelections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines a set of demo inputs to the option boxes in the
+order defined by getOptionBoxNames and getOptionsBoxOrder.
+If not None, a Demo button appears in the interface. Clicking the
+button fills the option boxed with the defined demo values.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getExtraHistElements">
+<em class="property">classmethod </em><code class="descname">getExtraHistElements</code><span class="sig-paren">(</span><em>choices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getExtraHistElements"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getExtraHistElements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines extra history elements to be created when clicking execute.
+This is defined by a list of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">proto.tools.GeneralGuiTool.HistElement</span></code> objects, as in the
+following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">proto.tools.GeneralGuiTool</span> <span class="k">import</span> <span class="n">HistElement</span>
+<span class="k">return</span> <span class="p">[</span><span class="n">HistElement</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">HISTORY_TITLE</span><span class="p">,</span> <span class="s1">&#39;bed&#39;</span><span class="p">,</span> <span class="n">hidden</span><span class="o">=</span><span class="kc">False</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>It is good practice to use class constants for longer strings.</p>
+<p>In the execute() method, one typically needs to fetch the path to
+the dataset referred to by the extra history element. To fetch the
+path, use the dict cls.extraGalaxyFn with the defined history title
+as key, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">cls</span><span class="o">.</span><span class="n">extraGalaxyFn</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">HISTORY_TITLE</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.execute">
+<em class="property">classmethod </em><code class="descname">execute</code><span class="sig-paren">(</span><em>choices</em>, <em>galaxyFn=None</em>, <em>username=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is called when execute-button is pushed by web-user. Should print
+output as HTML to standard out, which will be directed to a results
+page in Galaxy history. If getOutputFormat is anything else than
+‘html’, the output should be written to the file with path galaxyFn.
+If needed, StaticFile can be used to get a path where additional
+files can be put (cls, e.g. generated image files). choices is a list
+of selections made by web-user in each options box.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>Yes, unless <a class="reference internal" href="#proto.tools.ToolTemplate.ToolTemplate.isRedirectTool" title="proto.tools.ToolTemplate.ToolTemplate.isRedirectTool"><code class="xref py py-meth docutils literal notranslate"><span class="pre">isRedirectTool()</span></code></a> returns True.</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.validateAndReturnErrors">
+<em class="property">classmethod </em><code class="descname">validateAndReturnErrors</code><span class="sig-paren">(</span><em>choices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.validateAndReturnErrors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.validateAndReturnErrors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should validate the selected input parameters. If the parameters are
+not valid, an error text explaining the problem should be returned.
+The GUI then shows this text to the user (if not empty) and greys
+out the execute button (even if the text is empty). If all
+parameters are valid, the method should return None, which enables
+the execute button.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getSubToolClasses">
+<em class="property">classmethod </em><code class="descname">getSubToolClasses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getSubToolClasses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getSubToolClasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a list of classes for subtools of the main tool. These
+subtools will be selectable from a selection box at the top of the
+page. The input boxes will change according to which subtool is
+selected.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.isPublic">
+<em class="property">classmethod </em><code class="descname">isPublic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.isPublic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.isPublic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies whether the tool is accessible to all users. If False, the
+tool is only accessible to a restricted set of users as well as admin
+users, as defined in the galaxy.ini file.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>False</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.isRedirectTool">
+<em class="property">classmethod </em><code class="descname">isRedirectTool</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.isRedirectTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.isRedirectTool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies whether the tool should redirect to an URL when the Execute
+button is clicked.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>False</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getRedirectURL">
+<em class="property">classmethod </em><code class="descname">getRedirectURL</code><span class="sig-paren">(</span><em>choices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getRedirectURL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getRedirectURL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called to return an URL if the isRedirectTool method
+returns True.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>Yes, if <a class="reference internal" href="#proto.tools.ToolTemplate.ToolTemplate.isRedirectTool" title="proto.tools.ToolTemplate.ToolTemplate.isRedirectTool"><code class="xref py py-meth docutils literal notranslate"><span class="pre">isRedirectTool()</span></code></a> returns True.</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.isHistoryTool">
+<em class="property">classmethod </em><code class="descname">isHistoryTool</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.isHistoryTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.isHistoryTool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies if a History item should be created when the Execute button
+is clicked.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>True</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.isDynamic">
+<em class="property">classmethod </em><code class="descname">isDynamic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.isDynamic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.isDynamic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies whether changing the content of textboxes causes the page
+to reload. Returning False stops the need for reloading the tool
+after each input, resulting in less lags for the user.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>True</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getResetBoxes">
+<em class="property">classmethod </em><code class="descname">getResetBoxes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getResetBoxes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getResetBoxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a list of input boxes which resets the subsequent stored
+choices previously made. The input boxes are specified by index
+(starting with 1) or by key.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>[]</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getToolDescription">
+<em class="property">classmethod </em><code class="descname">getToolDescription</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getToolDescription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getToolDescription" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies a help text in HTML that is displayed below the tool.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>‘’</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getToolIllustration">
+<em class="property">classmethod </em><code class="descname">getToolIllustration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getToolIllustration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getToolIllustration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies an id used by StaticFile.py to reference an illustration
+file on disk. The id is a list of optional directory names followed
+by a filename. The base directory is STATIC_PATH as defined by
+Config.py. The full path is created from the base directory
+followed by the id.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getFullExampleURL">
+<em class="property">classmethod </em><code class="descname">getFullExampleURL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getFullExampleURL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getFullExampleURL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies an URL to an example page that describes the tool, for
+instance a Galaxy page.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.isDebugMode">
+<em class="property">classmethod </em><code class="descname">isDebugMode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.isDebugMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.isDebugMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies whether the debug mode is turned on. Debug mode is
+currently mostly used within the Genomic HyperBrowser and will make
+little difference in a plain Galaxy ProTo installation.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>False</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getOutputFormat">
+<em class="property">classmethod </em><code class="descname">getOutputFormat</code><span class="sig-paren">(</span><em>choices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getOutputFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getOutputFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>The format of the history element with the output of the tool. Note
+that if ‘html’ is returned, any print statements in the execute()
+method is printed to the output dataset. For text-based output
+(e.g. bed) the output dataset only contains text written to the
+galaxyFn file, while all print statements are redirected to the info
+field of the history item box.</p>
+<p>Note that for ‘html’ output, standard HTML header and footer code is
+added to the output dataset. If one wants to write the complete HTML
+page, use the restricted output format ‘customhtml’ instead.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>‘html’</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="proto.tools.ToolTemplate.ToolTemplate.getOutputName">
+<em class="property">classmethod </em><code class="descname">getOutputName</code><span class="sig-paren">(</span><em>choices=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/tools/ToolTemplate.html#ToolTemplate.getOutputName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.tools.ToolTemplate.ToolTemplate.getOutputName" title="Permalink to this definition">¶</a></dt>
+<dd><p>The title (name) of the main output history element.</p>
+<dl class="docutils">
+<dt><em>Mandatory method</em>:</dt>
+<dd>No</dd>
+<dt><em>Default return value (if method is not defined)</em>:</dt>
+<dd>The name of the tool</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Morten Johansen, Sveinung Gundersen, Geir Kjetil Sandve.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>

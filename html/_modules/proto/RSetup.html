@@ -1,0 +1,135 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>proto.RSetup &#8212; Galaxy ProTo 1.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
+          <span>Galaxy ProTo 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>proto.RSetup</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for proto.RSetup</h1><div class="highlight"><pre>
+<span></span><span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">rpy2.robjects</span> <span class="k">import</span> <span class="n">r</span>
+    <span class="kn">import</span> <span class="nn">rpy2.robjects</span> <span class="k">as</span> <span class="nn">robjects</span>
+    <span class="kn">import</span> <span class="nn">rpy2.rinterface</span> <span class="k">as</span> <span class="nn">ri</span>
+
+    <span class="kn">import</span> <span class="nn">rpy2.rpy_classic</span>
+    <span class="n">rpy2</span><span class="o">.</span><span class="n">rpy_classic</span><span class="o">.</span><span class="n">set_default_mode</span><span class="p">(</span><span class="n">rpy2</span><span class="o">.</span><span class="n">rpy_classic</span><span class="o">.</span><span class="n">NO_CONVERSION</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">rpy2.rpy_classic</span> <span class="k">import</span> <span class="n">r</span> <span class="k">as</span> <span class="n">rpy1</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span><span class="o">,</span> <span class="nn">collections</span>
+    <span class="kn">from</span> <span class="nn">rpy2.robjects</span> <span class="k">import</span> <span class="n">numpy2ri</span>
+    <span class="n">numpy2ri</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">replaceNone</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">obj</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Iterable</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="p">[</span><span class="n">replaceNone</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">robjects</span><span class="o">.</span><span class="n">NA_Real</span>
+
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="nf">iterToVector</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">replaceNone</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">obj</span>
+
+        <span class="k">return</span> <span class="n">numpy2ri</span><span class="o">.</span><span class="n">numpy2ri</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">py2ri</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">iterToVector</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">py2ri</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">iterToVector</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">py2ri</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">Iterable</span><span class="p">,</span> <span class="n">iterToVector</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">py2ri</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">replaceNone</span><span class="p">)</span>
+
+    <span class="nd">@robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">py2ri</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">dictToList</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">rpy2.robjects</span> <span class="k">import</span> <span class="n">ListVector</span>
+        <span class="k">return</span> <span class="n">ListVector</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">asNumpyScalar</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">obj</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">asScalar</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">robjects</span><span class="o">.</span><span class="n">default_converter</span><span class="o">.</span><span class="n">ri2ro</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">asNumpyScalar</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">IntSexpVector</span><span class="p">,</span> <span class="n">asScalar</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">FloatSexpVector</span><span class="p">,</span> <span class="n">asScalar</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">BoolSexpVector</span><span class="p">,</span> <span class="n">asScalar</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">ComplexSexpVector</span><span class="p">,</span> <span class="n">asScalar</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">StrSexpVector</span><span class="p">,</span> <span class="n">asScalar</span><span class="p">)</span>
+
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">NACharacterType</span><span class="p">,</span> <span class="n">asNumpyScalar</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">NAComplexType</span><span class="p">,</span> <span class="n">asNumpyScalar</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">NAIntegerType</span><span class="p">,</span> <span class="n">asNumpyScalar</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">NALogicalType</span><span class="p">,</span> <span class="n">asNumpyScalar</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2ro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ri</span><span class="o">.</span><span class="n">NARealType</span><span class="p">,</span> <span class="n">asNumpyScalar</span><span class="p">)</span>
+
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2py</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2py</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2py</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2py</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2py</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">robjects</span><span class="o">.</span><span class="n">conversion</span><span class="o">.</span><span class="n">ri2py</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">generic</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">)</span>
+
+
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="s2">&quot;Failed importing rpy2. Error: &quot;</span><span class="p">,</span> <span class="n">e</span>
+
+
+<div class="viewcode-block" id="getRVersion"><a class="viewcode-back" href="../../proto.RSetup.html#proto.RSetup.getRVersion">[docs]</a><span class="k">def</span> <span class="nf">getRVersion</span><span class="p">():</span>
+    <span class="n">verDict</span> <span class="o">=</span> <span class="n">r</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">verDict</span><span class="o">.</span><span class="n">rx2</span><span class="p">(</span><span class="s1">&#39;major&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">verDict</span><span class="o">.</span><span class="n">rx2</span><span class="p">(</span><span class="s1">&#39;minor&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">verDict</span><span class="p">[</span><span class="n">verDict</span><span class="o">.</span><span class="n">names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;major&#39;</span><span class="p">)],</span> <span class="n">verDict</span><span class="p">[</span><span class="n">verDict</span><span class="o">.</span><span class="n">names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;minor&#39;</span><span class="p">)])</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Morten Johansen, Sveinung Gundersen, Geir Kjetil Sandve.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>proto.TableCoreMixin &#8212; Galaxy ProTo 1.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
+          <span>Galaxy ProTo 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>proto.TableCoreMixin</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for proto.TableCoreMixin</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+
+
+<div class="viewcode-block" id="TableCoreMixin"><a class="viewcode-back" href="../../proto.TableCoreMixin.html#proto.TableCoreMixin.TableCoreMixin">[docs]</a><span class="k">class</span> <span class="nc">TableCoreMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="TableCoreMixin.tableFromDictionary"><a class="viewcode-back" href="../../proto.TableCoreMixin.html#proto.TableCoreMixin.TableCoreMixin.tableFromDictionary">[docs]</a>    <span class="k">def</span> <span class="nf">tableFromDictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataDict</span><span class="p">,</span> <span class="n">columnNames</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sortable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">tableId</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">expandable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">visibleRows</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                            <span class="n">presorted</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Render a table from data in dataDict. Each key in dataDict is a row title,</span>
+<span class="sd">        each value is a list of values, each corresponding to the column given with columnNames.</span>
+
+<span class="sd">        If presorted is set to a number and tableId != None and sortable == True, that column will be presorted (using a hacky solution using jquery.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">proto</span> <span class="k">import</span> <span class="n">CommonFunctions</span>
+        <span class="n">dataDictOfLists</span> <span class="o">=</span> <span class="n">CommonFunctions</span><span class="o">.</span><span class="n">convertToDictOfLists</span><span class="p">(</span><span class="n">dataDict</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">presorted</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">presorted</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">presorted</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s1">&#39;presorted must be int&#39;</span>
+            <span class="n">dataDictOfLists</span> <span class="o">=</span> <span class="n">CommonFunctions</span><span class="o">.</span><span class="n">smartSortDictOfLists</span><span class="p">(</span>
+                <span class="n">dataDictOfLists</span><span class="p">,</span> <span class="n">sortColumnIndex</span><span class="o">=</span><span class="n">presorted</span><span class="p">)</span>
+
+        <span class="n">tableClass</span> <span class="o">=</span> <span class="s1">&#39;colored bordered&#39;</span>
+        <span class="k">if</span> <span class="n">expandable</span><span class="p">:</span>
+            <span class="n">tableClass</span> <span class="o">+=</span> <span class="s1">&#39; expandable&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableHeader</span><span class="p">(</span><span class="n">headerRow</span><span class="o">=</span><span class="n">columnNames</span><span class="p">,</span> <span class="n">sortable</span><span class="o">=</span><span class="n">sortable</span><span class="p">,</span>
+                         <span class="n">tableId</span><span class="o">=</span><span class="n">tableId</span><span class="p">,</span>
+                         <span class="n">tableClass</span><span class="o">=</span><span class="n">tableClass</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dataDictOfLists</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tableLine</span><span class="p">([</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">val</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tableLine</span><span class="p">([</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">val</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableFooter</span><span class="p">(</span><span class="n">expandable</span><span class="o">=</span><span class="n">expandable</span><span class="p">,</span> <span class="n">tableId</span><span class="o">=</span><span class="n">tableId</span><span class="p">,</span>
+                         <span class="n">numRows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dataDict</span><span class="p">),</span> <span class="n">visibleRows</span><span class="o">=</span><span class="n">visibleRows</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="TableCoreMixin.tableFromDictOfDicts"><a class="viewcode-back" href="../../proto.TableCoreMixin.html#proto.TableCoreMixin.TableCoreMixin.tableFromDictOfDicts">[docs]</a>    <span class="k">def</span> <span class="nf">tableFromDictOfDicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataDict</span><span class="p">,</span> <span class="n">firstColName</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # Note: it is assumed that dataDict is a full matrix, i.e. each element in</span>
+<span class="sd">        # the dict is a dict of the same size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataDict</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">)</span> <span class="ow">and</span> \
+               <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataDict</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> \
+            <span class="s1">&#39;dataDict must be an OrderedDict of OrderedDicts&#39;</span>
+
+        <span class="kn">from</span> <span class="nn">proto.CommonFunctions</span> <span class="k">import</span> <span class="n">fromDictOfDictsToDictOfListsAndColumnNameList</span>
+        <span class="n">convertedDataDict</span><span class="p">,</span> <span class="n">colNames</span> <span class="o">=</span> \
+            <span class="n">fromDictOfDictsToDictOfListsAndColumnNameList</span><span class="p">(</span><span class="n">dataDict</span><span class="p">,</span> <span class="n">firstColName</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tableFromDictionary</span><span class="p">(</span><span class="n">convertedDataDict</span><span class="p">,</span>
+                                 <span class="n">columnNames</span><span class="o">=</span><span class="n">colNames</span><span class="p">,</span>
+                                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Morten Johansen, Sveinung Gundersen, Geir Kjetil Sandve.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,212 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>proto.CommonFunctions module &#8212; Galaxy ProTo 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>Galaxy ProTo 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>proto.CommonFunctions module</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="module-proto.CommonFunctions">
+<span id="proto-commonfunctions-module"></span><h1>proto.CommonFunctions module<a class="headerlink" href="#module-proto.CommonFunctions" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="proto.CommonFunctions.getFileSuffix">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getFileSuffix</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getFileSuffix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getFileSuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.stripFileSuffix">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">stripFileSuffix</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#stripFileSuffix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.stripFileSuffix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.ensurePathExists">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">ensurePathExists</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#ensurePathExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.ensurePathExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assumes that fn consists of a basepath (folder) and a filename, and ensures that the folder exists.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.extractIdFromGalaxyFn">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">extractIdFromGalaxyFn</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#extractIdFromGalaxyFn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.extractIdFromGalaxyFn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the Galaxy history ID from a history file path, e.g.:</p>
+<p>‘/path/to/001/dataset_00123.dat’ -&gt; [‘001’, ‘00123’]</p>
+<p>For files related to a Galaxy history (e.g. dataset_00123_files):</p>
+<p>‘/path/to/001/dataset_00123_files/myfile/myfile.bed’ -&gt; [‘001’, ‘00123’, ‘myfile’]</p>
+<p>Also, if the input is a run-specific file, the history and batch ID, is also extracted, e.g.:</p>
+<p>‘/path/to/dev2/001/00123/0/somefile.bed’ -&gt; [‘001’, ‘00123’, ‘0’]</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.createFullGalaxyIdFromNumber">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">createFullGalaxyIdFromNumber</code><span class="sig-paren">(</span><em>num</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#createFullGalaxyIdFromNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.createFullGalaxyIdFromNumber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getGalaxyFnFromDatasetId">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getGalaxyFnFromDatasetId</code><span class="sig-paren">(</span><em>num</em>, <em>galaxyFilePath=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getGalaxyFnFromDatasetId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getGalaxyFnFromDatasetId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getEncodedDatasetIdFromPlainGalaxyId">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getEncodedDatasetIdFromPlainGalaxyId</code><span class="sig-paren">(</span><em>plainId</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getEncodedDatasetIdFromPlainGalaxyId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getEncodedDatasetIdFromPlainGalaxyId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getEncodedDatasetIdFromGalaxyFn">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getEncodedDatasetIdFromGalaxyFn</code><span class="sig-paren">(</span><em>galaxyFn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getEncodedDatasetIdFromGalaxyFn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getEncodedDatasetIdFromGalaxyFn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getGalaxyFnFromEncodedDatasetId">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getGalaxyFnFromEncodedDatasetId</code><span class="sig-paren">(</span><em>encodedId</em>, <em>galaxyFilePath=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getGalaxyFnFromEncodedDatasetId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getGalaxyFnFromEncodedDatasetId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getGalaxyFnFromAnyDatasetId">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getGalaxyFnFromAnyDatasetId</code><span class="sig-paren">(</span><em>id</em>, <em>galaxyFilePath=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getGalaxyFnFromAnyDatasetId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getGalaxyFnFromAnyDatasetId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getGalaxyFilesDir">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getGalaxyFilesDir</code><span class="sig-paren">(</span><em>galaxyFn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getGalaxyFilesDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getGalaxyFilesDir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getGalaxyFilesFilename">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getGalaxyFilesFilename</code><span class="sig-paren">(</span><em>galaxyFn</em>, <em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getGalaxyFilesFilename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getGalaxyFilesFilename" title="Permalink to this definition">¶</a></dt>
+<dd><p>id is the relative file hierarchy, encoded as a list of strings</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getGalaxyFilesFnFromEncodedDatasetId">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getGalaxyFilesFnFromEncodedDatasetId</code><span class="sig-paren">(</span><em>encodedId</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getGalaxyFilesFnFromEncodedDatasetId"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getGalaxyFilesFnFromEncodedDatasetId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.createGalaxyFilesFn">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">createGalaxyFilesFn</code><span class="sig-paren">(</span><em>galaxyFn</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#createGalaxyFilesFn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.createGalaxyFilesFn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.extractFnFromDatasetInfo">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">extractFnFromDatasetInfo</code><span class="sig-paren">(</span><em>datasetInfo</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#extractFnFromDatasetInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.extractFnFromDatasetInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.extractFileSuffixFromDatasetInfo">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">extractFileSuffixFromDatasetInfo</code><span class="sig-paren">(</span><em>datasetInfo</em>, <em>fileSuffixFilterList=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#extractFileSuffixFromDatasetInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.extractFileSuffixFromDatasetInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.extractNameFromDatasetInfo">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">extractNameFromDatasetInfo</code><span class="sig-paren">(</span><em>datasetInfo</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#extractNameFromDatasetInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.extractNameFromDatasetInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getSecureIdAndExtFromDatasetInfoAsStr">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getSecureIdAndExtFromDatasetInfoAsStr</code><span class="sig-paren">(</span><em>datasetInfo</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getSecureIdAndExtFromDatasetInfoAsStr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getSecureIdAndExtFromDatasetInfoAsStr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.createToolURL">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">createToolURL</code><span class="sig-paren">(</span><em>toolId</em>, <em>**kwArgs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#createToolURL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.createToolURL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.createGalaxyToolURL">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">createGalaxyToolURL</code><span class="sig-paren">(</span><em>toolId</em>, <em>**kwArgs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#createGalaxyToolURL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.createGalaxyToolURL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getGalaxyUploadLinkOnclick">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getGalaxyUploadLinkOnclick</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getGalaxyUploadLinkOnclick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getGalaxyUploadLinkOnclick" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.getLoadToGalaxyHistoryURL">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">getLoadToGalaxyHistoryURL</code><span class="sig-paren">(</span><em>fn</em>, <em>genome=''</em>, <em>galaxyDataType='bed'</em>, <em>urlPrefix=None</em>, <em>histElementName=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#getLoadToGalaxyHistoryURL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.getLoadToGalaxyHistoryURL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.strWithStdFormatting">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">strWithStdFormatting</code><span class="sig-paren">(</span><em>val</em>, <em>separateThousands=True</em>, <em>floatFormatFlag='g'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#strWithStdFormatting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.strWithStdFormatting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.strWithNatLangFormatting">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">strWithNatLangFormatting</code><span class="sig-paren">(</span><em>val</em>, <em>separateThousands=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#strWithNatLangFormatting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.strWithNatLangFormatting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.sortDictOfLists">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">sortDictOfLists</code><span class="sig-paren">(</span><em>dictOfLists</em>, <em>sortColumnIndex</em>, <em>descending=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#sortDictOfLists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.sortDictOfLists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.smartSortDictOfLists">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">smartSortDictOfLists</code><span class="sig-paren">(</span><em>dictOfLists</em>, <em>sortColumnIndex</em>, <em>descending=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#smartSortDictOfLists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.smartSortDictOfLists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort numbers first than strings, take into account formatted floats</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.isNan">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">isNan</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#isNan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.isNan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.forceNumericSortingKey">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">forceNumericSortingKey</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#forceNumericSortingKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.forceNumericSortingKey" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.convertToDictOfLists">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">convertToDictOfLists</code><span class="sig-paren">(</span><em>dataDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#convertToDictOfLists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.convertToDictOfLists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a dict of tuples or single values to dict of lists</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="proto.CommonFunctions.fromDictOfDictsToDictOfListsAndColumnNameList">
+<code class="descclassname">proto.CommonFunctions.</code><code class="descname">fromDictOfDictsToDictOfListsAndColumnNameList</code><span class="sig-paren">(</span><em>dataDict</em>, <em>firstColName=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/proto/CommonFunctions.html#fromDictOfDictsToDictOfListsAndColumnNameList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#proto.CommonFunctions.fromDictOfDictsToDictOfListsAndColumnNameList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Morten Johansen, Sveinung Gundersen, Geir Kjetil Sandve.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,240 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>proto.StaticFile &#8212; Galaxy ProTo 1.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
+          <span>Galaxy ProTo 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>proto.StaticFile</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for proto.StaticFile</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">proto.config.Config</span> <span class="k">import</span> <span class="n">GALAXY_BASE_DIR</span><span class="p">,</span> <span class="n">STATIC_DIR</span><span class="p">,</span> <span class="n">STATIC_PATH</span><span class="p">,</span> <span class="n">STATIC_REL_PATH</span>
+<span class="kn">from</span> <span class="nn">proto.CommonFunctions</span> <span class="k">import</span> <span class="n">ensurePathExists</span><span class="p">,</span> <span class="n">getLoadToGalaxyHistoryURL</span><span class="p">,</span> \
+    <span class="n">extractNameFromDatasetInfo</span><span class="p">,</span> <span class="n">extractIdFromGalaxyFn</span><span class="p">,</span> <span class="n">getGalaxyFilesFilename</span>
+<span class="kn">from</span> <span class="nn">proto.HtmlCore</span> <span class="k">import</span> <span class="n">HtmlCore</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="StaticFile"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile">[docs]</a><span class="k">class</span> <span class="nc">StaticFile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">STATIC_DIR</span> <span class="o">=</span> <span class="n">STATIC_DIR</span>
+    <span class="n">STATIC_PATH</span> <span class="o">=</span> <span class="n">STATIC_PATH</span>
+    <span class="n">STATIC_REL_PATH</span> <span class="o">=</span> <span class="n">STATIC_REL_PATH</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="c1">#assert id[0] in [&#39;files&#39;,&#39;images&#39;,&#39;run_specific&#39;], &#39;Only a restricted set of first elements of id is supported, in order to have control of phyical storage locations. ID: &#39;+str(id)</span>
+        <span class="k">assert</span> <span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;files&#39;</span><span class="p">,</span><span class="s1">&#39;images&#39;</span><span class="p">],</span> <span class="s1">&#39;Only a restricted set of first elements of id is supported, in order to have control of phyical storage locations. ID: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span>
+
+<div class="viewcode-block" id="StaticFile.getDiskPath"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.getDiskPath">[docs]</a>    <span class="k">def</span> <span class="nf">getDiskPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ensurePath</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">relativeToBase</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATIC_DIR</span> <span class="k">if</span> <span class="n">relativeToBase</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATIC_PATH</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">path</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ensurePath</span><span class="p">:</span>
+            <span class="n">ensurePathExists</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fn</span></div>
+
+<div class="viewcode-block" id="StaticFile.getFile"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.getFile">[docs]</a>    <span class="k">def</span> <span class="nf">getFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">):</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiskPath</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span><span class="n">mode</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StaticFile.fileExists"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.fileExists">[docs]</a>    <span class="k">def</span> <span class="nf">fileExists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getDiskPath</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="StaticFile.writeTextToFile"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.writeTextToFile">[docs]</a>    <span class="k">def</span> <span class="nf">writeTextToFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFile</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="StaticFile.getURL"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.getURL">[docs]</a>    <span class="k">def</span> <span class="nf">getURL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">STATIC_REL_PATH</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StaticFile.getLink"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.getLink">[docs]</a>    <span class="k">def</span> <span class="nf">getLink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linkText</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">HtmlCore</span><span class="p">()</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">linkText</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getURL</span><span class="p">()))</span></div>
+        <span class="c1">#return &#39;&lt;a href=%s&gt;%s&lt;/a&gt;&#39; % (self.getURL(), linkText)</span>
+
+<div class="viewcode-block" id="StaticFile.getEmbeddedImage"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.getEmbeddedImage">[docs]</a>    <span class="k">def</span> <span class="nf">getEmbeddedImage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">HtmlCore</span><span class="p">()</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getURL</span><span class="p">()))</span></div>
+
+<div class="viewcode-block" id="StaticFile.getLoadToHistoryLink"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.getLoadToHistoryLink">[docs]</a>    <span class="k">def</span> <span class="nf">getLoadToHistoryLink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linkText</span><span class="p">,</span> <span class="n">galaxyDataType</span><span class="o">=</span><span class="s1">&#39;bed&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">HtmlCore</span><span class="p">()</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">linkText</span><span class="p">,</span>
+                                   <span class="n">getLoadToGalaxyHistoryURL</span>
+                                   <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getDiskPath</span><span class="p">(</span><span class="n">relativeToBase</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                    <span class="n">galaxyDataType</span><span class="o">=</span><span class="n">galaxyDataType</span><span class="p">,</span>
+                                    <span class="n">histElementName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">getId</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span></div>
+
+<div class="viewcode-block" id="StaticFile.openRFigure"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.openRFigure">[docs]</a>    <span class="k">def</span> <span class="nf">openRFigure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">800</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">proto.RSetup</span> <span class="k">import</span> <span class="n">r</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">png</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">getDiskPath</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">height</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="n">pointsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="mi">72</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StaticFile.plotRHist"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.plotRHist">[docs]</a>    <span class="k">def</span> <span class="nf">plotRHist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">breaks</span><span class="p">,</span> <span class="n">main</span><span class="p">,</span> <span class="n">saveRawData</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alsoOpenAndClose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwArgs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">proto.RSetup</span> <span class="k">import</span> <span class="n">r</span><span class="p">,</span> <span class="n">robjects</span>
+        <span class="n">rvals</span> <span class="o">=</span> <span class="n">robjects</span><span class="o">.</span><span class="n">FloatVector</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">breaks</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span><span class="nb">tuple</span><span class="p">]:</span>
+            <span class="n">rbreaks</span> <span class="o">=</span> <span class="n">robjects</span><span class="o">.</span><span class="n">FloatVector</span><span class="p">(</span><span class="n">breaks</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rbreaks</span> <span class="o">=</span> <span class="n">breaks</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;xlab&#39;</span> <span class="ow">in</span> <span class="n">kwArgs</span><span class="p">:</span>
+            <span class="n">kwArgs</span><span class="p">[</span><span class="s1">&#39;xlab&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Values&#39;</span>
+
+        <span class="k">if</span> <span class="n">alsoOpenAndClose</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">openRFigure</span><span class="p">()</span>
+
+        <span class="n">histRes</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">rvals</span><span class="p">,</span> <span class="n">breaks</span><span class="o">=</span><span class="n">rbreaks</span><span class="p">,</span> <span class="n">main</span><span class="o">=</span><span class="n">main</span><span class="p">,</span> <span class="o">**</span><span class="n">kwArgs</span> <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">saveRawData</span><span class="p">:</span>
+            <span class="n">rawFn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiskPath</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.raw.txt&#39;</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">rawFn</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;vals &lt;- c(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">breaks</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span><span class="nb">tuple</span><span class="p">]:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;breaks &lt;- c(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">breaks</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;breaks &lt;- </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">breaks</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;hist(vals, breaks=breaks) </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="c1">#r(&#39;prn=print&#39;)</span>
+            <span class="n">intensities</span> <span class="o">=</span> <span class="n">r</span><span class="p">(</span><span class="s1">&#39;function(r){r$intensities}&#39;</span><span class="p">)(</span><span class="n">histRes</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;intensities = c(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">intensities</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">alsoOpenAndClose</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">closeRFigure</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="StaticFile.plotRLines"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.plotRLines">[docs]</a>    <span class="k">def</span> <span class="nf">plotRLines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xVals</span><span class="p">,</span> <span class="n">yLines</span><span class="p">,</span> <span class="n">saveRawData</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alsoOpenAndClose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lty</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwArgs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        xVals: one list containing x-values</span>
+<span class="sd">        yLines: list of lists containing y-values</span>
+<span class="sd">        colors: list of colors to use for each line</span>
+<span class="sd">        legend: list of legend text per line (color)</span>
+<span class="sd">        lty: line types for r.legend</span>
+<span class="sd">        any extra params in kwArgs is sent to r.plot. Use to send for example xlab,ylab</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">from</span> <span class="nn">proto.RSetup</span> <span class="k">import</span> <span class="n">r</span>
+        <span class="n">numLines</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">yLines</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">alsoOpenAndClose</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">openRFigure</span><span class="p">()</span>
+
+        <span class="n">yMax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span> <span class="nb">max</span><span class="p">(</span><span class="n">yVals</span><span class="p">)</span> <span class="k">for</span> <span class="n">yVals</span> <span class="ow">in</span> <span class="n">yLines</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">yLines</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">5</span> <span class="ow">or</span> <span class="n">colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="s1">&#39;grey&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">yLines</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">lty</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lty</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numLines</span><span class="p">]</span>
+        <span class="c1">#if legend == None:</span>
+            <span class="c1">#legend = [&#39;&#39; for i in range(len(yLines))]</span>
+
+        <span class="n">r</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">unlist</span><span class="p">(</span><span class="n">xVals</span><span class="p">),</span> <span class="n">r</span><span class="o">.</span><span class="n">unlist</span><span class="p">(</span><span class="n">xVals</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="n">r</span><span class="o">.</span><span class="n">unlist</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">yMax</span><span class="p">]),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwArgs</span><span class="p">)</span><span class="c1">#,col=&#39;black&#39; )</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">yVals</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">yLines</span><span class="p">):</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">lines</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">unlist</span><span class="p">(</span><span class="n">xVals</span><span class="p">),</span> <span class="n">r</span><span class="o">.</span><span class="n">unlist</span><span class="p">(</span><span class="n">yVals</span><span class="p">),</span> <span class="n">col</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">legend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="s1">&#39;topleft&#39;</span><span class="p">,</span><span class="n">legend</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span><span class="n">lty</span><span class="o">=</span><span class="n">lty</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">saveRawData</span><span class="p">:</span>
+            <span class="n">rawFn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDiskPath</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.raw.txt&#39;</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">rawFn</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;x &lt;- c(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">xVals</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">yVals</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">yLines</span><span class="p">):</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;y</span><span class="si">%i</span><span class="s1"> &lt;- c(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">yVals</span><span class="p">))</span> <span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">alsoOpenAndClose</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">closeRFigure</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="StaticFile.closeRFigure"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticFile.closeRFigure">[docs]</a>    <span class="k">def</span> <span class="nf">closeRFigure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">proto.RSetup</span> <span class="k">import</span> <span class="n">r</span>
+        <span class="n">r</span><span class="p">(</span><span class="s1">&#39;dev.off()&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="StaticImage"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.StaticImage">[docs]</a><span class="k">class</span> <span class="nc">StaticImage</span><span class="p">(</span><span class="n">StaticFile</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="n">StaticFile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">]</span><span class="o">+</span><span class="nb">id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GalaxyRunSpecificFile"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.GalaxyRunSpecificFile">[docs]</a><span class="k">class</span> <span class="nc">GalaxyRunSpecificFile</span><span class="p">(</span><span class="n">StaticFile</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Handles file path and URL of static (web-accessible) files which are specific</span>
+<span class="sd">    to a particular history element (run).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1">#def __init__(self, id, fileEnding, galaxyFn, straightOnStaticPath=False):</span>
+    <span class="c1">#    galaxyId = extractIdFromGalaxyFn(galaxyFn)</span>
+    <span class="c1">#    RunSpecificFile.__init__(self, id, fileEnding, galaxyId, straightOnStaticPath)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">galaxyFn</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_galaxyFn</span> <span class="o">=</span> <span class="n">galaxyFn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_relativeId</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="c1">#StaticFile.__init__(self, [&#39;run_specific&#39;] + id)</span>
+        <span class="c1">#galaxyId = galaxyFn if type(galaxyFn) in (list,tuple) else extractIdFromGalaxyFn(galaxyFn)</span>
+        <span class="c1">#StaticFile.__init__(self, getUniqueRunSpecificId(galaxyId + id))</span>
+
+<div class="viewcode-block" id="GalaxyRunSpecificFile.getDiskPath"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.GalaxyRunSpecificFile.getDiskPath">[docs]</a>    <span class="k">def</span> <span class="nf">getDiskPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ensurePath</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">relativeToBase</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_galaxyFn</span>
+        <span class="k">if</span> <span class="n">relativeToBase</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">GALAXY_BASE_DIR</span><span class="p">):</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">GALAXY_BASE_DIR</span><span class="p">):]</span>
+
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">getGalaxyFilesFilename</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relativeId</span><span class="p">)</span>
+        <span class="c1">#fn = os.sep.join([GALAXY_FILE_PATH] + [self._id[1], &#39;dataset_&#39;+self._id[2]+&#39;_files&#39;] + self._id[3:])</span>
+        <span class="k">if</span> <span class="n">ensurePath</span><span class="p">:</span>
+            <span class="n">ensurePathExists</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fn</span></div>
+
+<div class="viewcode-block" id="GalaxyRunSpecificFile.getURL"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.GalaxyRunSpecificFile.getURL">[docs]</a>    <span class="k">def</span> <span class="nf">getURL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_relativeId</span><span class="p">)</span></div>
+        <span class="c1">#return &#39;/&#39;.join( self._id[3:])</span>
+
+<div class="viewcode-block" id="GalaxyRunSpecificFile.getId"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.GalaxyRunSpecificFile.getId">[docs]</a>    <span class="k">def</span> <span class="nf">getId</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">extractIdFromGalaxyFn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_galaxyFn</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relativeId</span></div></div>
+
+
+<div class="viewcode-block" id="PickleStaticFile"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.PickleStaticFile">[docs]</a><span class="k">class</span> <span class="nc">PickleStaticFile</span><span class="p">(</span><span class="n">StaticFile</span><span class="p">):</span>
+<div class="viewcode-block" id="PickleStaticFile.storePickledObject"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.PickleStaticFile.storePickledObject">[docs]</a>    <span class="k">def</span> <span class="nf">storePickledObject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">cPickle</span> <span class="k">import</span> <span class="n">dump</span>
+        <span class="n">dump</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFile</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="PickleStaticFile.loadPickledObject"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.PickleStaticFile.loadPickledObject">[docs]</a>    <span class="k">def</span> <span class="nf">loadPickledObject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">cPickle</span> <span class="k">import</span> <span class="n">load</span>
+        <span class="k">return</span> <span class="n">load</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFile</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="RunSpecificPickleFile"><a class="viewcode-back" href="../../proto.StaticFile.html#proto.StaticFile.RunSpecificPickleFile">[docs]</a><span class="k">class</span> <span class="nc">RunSpecificPickleFile</span><span class="p">(</span><span class="n">GalaxyRunSpecificFile</span><span class="p">,</span> <span class="n">PickleStaticFile</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">galaxyFn</span><span class="p">):</span>
+        <span class="n">GalaxyRunSpecificFile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;results.pickle&#39;</span><span class="p">],</span> <span class="n">galaxyFn</span><span class="p">)</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Morten Johansen, Sveinung Gundersen, Geir Kjetil Sandve.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>
