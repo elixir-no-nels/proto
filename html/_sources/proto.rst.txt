@@ -15,6 +15,7 @@ Submodules
 .. toctree::
 
    proto.CommonFunctions
+   proto.FileBrowser
    proto.HtmlCore
    proto.RSetup
    proto.StaticFile

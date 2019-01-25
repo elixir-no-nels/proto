@@ -1,0 +1,159 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>proto.FileBrowser &#8212; Galaxy ProTo 1.2 documentation</title>
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
+          <span>Galaxy ProTo 1.2 documentation</span></a></h1>
+        <h2 class="heading"><span>proto.FileBrowser</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for proto.FileBrowser</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">humanize</span>
+
+<span class="kn">from</span> <span class="nn">proto.CommonFunctions</span> <span class="k">import</span> <span class="n">isSamePath</span><span class="p">,</span> <span class="n">getLoadToGalaxyHistoryURL</span><span class="p">,</span> <span class="n">getFileSuffix</span>
+<span class="kn">from</span> <span class="nn">proto.HtmlCore</span> <span class="k">import</span> <span class="n">HtmlCore</span>
+<span class="kn">from</span> <span class="nn">proto.StaticFile</span> <span class="k">import</span> <span class="n">GalaxyRunSpecificFile</span>
+
+
+<span class="n">FILE_BROWSER_FILENAME</span> <span class="o">=</span> <span class="s1">&#39;files.html&#39;</span>
+
+
+<div class="viewcode-block" id="generateHtmlFileBrowserForGalaxyFilesDir"><a class="viewcode-back" href="../../proto.FileBrowser.html#proto.FileBrowser.generateHtmlFileBrowserForGalaxyFilesDir">[docs]</a><span class="k">def</span> <span class="nf">generateHtmlFileBrowserForGalaxyFilesDir</span><span class="p">(</span><span class="n">galaxyFn</span><span class="p">,</span> <span class="n">writeRootPageToGalaxyFn</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a HTML-based file browser that provides a clickable overview of all the result files</span>
+<span class="sd">    in the &quot;dataset_123_files&quot; directory connected to a Galaxy history element. This folder </span>
+<span class="sd">    contains all the result files except the main output (which is in the galaxyFn dataset file).</span>
+<span class="sd">    The file browser is written into a set of files named &#39;{}&#39;, one in each directory.</span>
+<span class="sd">    :param galaxyFn: Path to Galaxy dataset file (e.g. &quot;/path/to/dataset_123.dat&quot;).</span>
+<span class="sd">    :param writeRootPageToGalaxyFn: If True, write root HTML page to main dataset file (galaxyFn).</span>
+<span class="sd">    :return: GalaxyRunSpecificFile object pointing to the newly created root HTML page (named </span>
+<span class="sd">        &#39;{}&#39;). If writeRootPageToGalaxyFn is set to True, None is returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">FILE_BROWSER_FILENAME</span><span class="p">,</span> <span class="n">FILE_BROWSER_FILENAME</span><span class="p">)</span>
+
+    <span class="c1"># Helper functions</span>
+
+    <span class="k">def</span> <span class="nf">_addHeader</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">):</span>
+        <span class="n">relDirPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">dirPath</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">rootDir</span><span class="p">)):]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">relDirPath</span><span class="p">:</span>
+            <span class="n">relDirPath</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s1">&#39;File browser for result directory: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">relDirPath</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_addUpOneDirLinkIfNotRoot</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">,</span> <span class="n">writeRootPageToGalaxyFn</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isSamePath</span><span class="p">(</span><span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">isSamePath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirPath</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">),</span> <span class="n">rootDir</span><span class="p">):</span>
+                <span class="n">upOneDirPageFn</span> <span class="o">=</span> <span class="n">FILE_BROWSER_FILENAME</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">writeRootPageToGalaxyFn</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">upOneDirPageFn</span> <span class="o">=</span> <span class="n">FILE_BROWSER_FILENAME</span>
+            <span class="n">upOneDirLink</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">HtmlCore</span><span class="p">()</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="s1">&#39;&lt; Up one directory&#39;</span><span class="p">,</span> <span class="s1">&#39;../&#39;</span> <span class="o">+</span> <span class="n">upOneDirPageFn</span><span class="p">))</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">paragraph</span><span class="p">(</span><span class="n">upOneDirLink</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_addLinkToMainDatasetIfRootAndSeparateFile</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span>
+                                                   <span class="n">rootDir</span><span class="p">,</span> <span class="n">writeRootPageToGalaxyFn</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isSamePath</span><span class="p">(</span><span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">writeRootPageToGalaxyFn</span><span class="p">:</span>
+            <span class="n">mainDatasetLink</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">HtmlCore</span><span class="p">()</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="s1">&#39;&lt; Back to main dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;/.&#39;</span><span class="p">))</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">paragraph</span><span class="p">(</span><span class="n">mainDatasetLink</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_addTableHeader</span><span class="p">(</span><span class="n">core</span><span class="p">):</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">tableHeader</span><span class="p">([</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Date Modified&#39;</span><span class="p">,</span> <span class="s1">&#39;Size&#39;</span><span class="p">],</span>
+                         <span class="n">tableClass</span><span class="o">=</span><span class="s1">&#39;auto_width colored bordered&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_addTableLines</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">dirNames</span><span class="p">,</span> <span class="n">fileNames</span><span class="p">):</span>
+        <span class="n">filesAndDirs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dirNames</span> <span class="o">+</span> <span class="n">fileNames</span><span class="p">,</span>
+                                  <span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">dirNames</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">fileNames</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">isDir</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">filesAndDirs</span><span class="p">):</span>
+            <span class="n">fullItemPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirPath</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">tableLine</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">_getNameContent</span><span class="p">(</span><span class="n">isDir</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">fullItemPath</span><span class="p">),</span>
+                 <span class="n">_getLastModifiedDateContent</span><span class="p">(</span><span class="n">fullItemPath</span><span class="p">),</span>
+                 <span class="n">_getSizeContent</span><span class="p">(</span><span class="n">fullItemPath</span><span class="p">,</span> <span class="n">isDir</span><span class="p">)],</span>
+                <span class="n">rowClass</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;odd_row&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_getNameContent</span><span class="p">(</span><span class="n">isDir</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">fullItemPath</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isDir</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HtmlCore</span><span class="p">()</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">item</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">FILE_BROWSER_FILENAME</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">loadToHistoryUrl</span> <span class="o">=</span> <span class="n">getLoadToGalaxyHistoryURL</span><span class="p">(</span>
+                <span class="n">fullItemPath</span><span class="p">,</span>
+                <span class="n">galaxyDataType</span><span class="o">=</span><span class="s1">&#39;txt&#39;</span><span class="p">,</span>
+                <span class="n">histElementName</span><span class="o">=</span><span class="n">item</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">HtmlCore</span><span class="p">()</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">loadToHistoryUrl</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_getLastModifiedDateContent</span><span class="p">(</span><span class="n">fullItemPath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">fullItemPath</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_getSizeContent</span><span class="p">(</span><span class="n">fullItemPath</span><span class="p">,</span> <span class="n">isDir</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&amp;lt;dir&amp;gt;&#39;</span> <span class="k">if</span> <span class="n">isDir</span> <span class="k">else</span> <span class="n">humanize</span><span class="o">.</span><span class="n">naturalsize</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">fullItemPath</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_determineOutputFilePath</span><span class="p">(</span><span class="n">galaxyFn</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">,</span> <span class="n">writeRootPageToGalaxyFn</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isSamePath</span><span class="p">(</span><span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">)</span> <span class="ow">and</span> <span class="n">writeRootPageToGalaxyFn</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">galaxyFn</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirPath</span><span class="p">,</span> <span class="n">FILE_BROWSER_FILENAME</span><span class="p">))</span>
+
+
+    <span class="c1"># Main function</span>
+
+    <span class="n">rootDir</span> <span class="o">=</span> <span class="n">GalaxyRunSpecificFile</span><span class="p">([],</span> <span class="n">galaxyFn</span><span class="p">)</span><span class="o">.</span><span class="n">getDiskPath</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">dirNames</span><span class="p">,</span> <span class="n">fileNames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">rootDir</span><span class="p">):</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="n">HtmlCore</span><span class="p">()</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+        <span class="n">_addHeader</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">)</span>
+        <span class="n">_addUpOneDirLinkIfNotRoot</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">,</span> <span class="n">writeRootPageToGalaxyFn</span><span class="p">)</span>
+        <span class="n">_addLinkToMainDatasetIfRootAndSeparateFile</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">,</span>
+                                                   <span class="n">writeRootPageToGalaxyFn</span><span class="p">)</span>
+        <span class="n">_addTableHeader</span><span class="p">(</span><span class="n">core</span><span class="p">)</span>
+        <span class="n">_addTableLines</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">dirNames</span><span class="p">,</span> <span class="n">fileNames</span><span class="p">)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">tableFooter</span><span class="p">()</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+
+        <span class="n">outputPath</span> <span class="o">=</span> <span class="n">_determineOutputFilePath</span><span class="p">(</span><span class="n">galaxyFn</span><span class="p">,</span> <span class="n">dirPath</span><span class="p">,</span> <span class="n">rootDir</span><span class="p">,</span> <span class="n">writeRootPageToGalaxyFn</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputPath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outputPage</span><span class="p">:</span>
+            <span class="n">outputPage</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">core</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">GalaxyRunSpecificFile</span><span class="p">([</span><span class="n">FILE_BROWSER_FILENAME</span><span class="p">],</span> <span class="n">galaxyFn</span><span class="p">)</span> \
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">writeRootPageToGalaxyFn</span> <span class="k">else</span> <span class="kc">None</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Morten Johansen, Sveinung Gundersen, Geir Kjetil Sandve.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+    </div>
+  </body>
+</html>
