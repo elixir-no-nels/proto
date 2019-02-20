@@ -26,7 +26,7 @@ author = u'Morten Johansen, Sveinung Gundersen, Geir Kjetil Sandve'
 # The short X.Y version
 version = u''
 # The full version, including alpha/beta/rc tags
-release = u'1.2.2'
+release = u'1.2.3'
 
 
 # -- General configuration ---------------------------------------------------
