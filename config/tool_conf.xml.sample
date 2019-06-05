@@ -1,5 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <toolbox monitor="true">
+  <label text="My tools" id="mytools_label" />
+  <section id="mytools" name="All of my tools">
+    <tool file="proto/mytools/MyFirstTool.xml" />
+  </section>
+  <label text="Galaxy tools" id="galaxy_label" />
   <section id="getext" name="Get Data">
     <tool file="data_source/upload.xml" />
     <tool file="data_source/ucsc_tablebrowser.xml" />
