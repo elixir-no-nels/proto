@@ -1,0 +1,4 @@
+<tool id="proto_my_first_tool" name="This is my first tool" version="1.0.0"
+  tool_type="proto_generic" proto_tool_module="proto.tools.wp2.MyFirstTool" proto_tool_class="MyFirstTool">
+  <description>and it is great</description>
+</tool>

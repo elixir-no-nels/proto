@@ -2,7 +2,7 @@
 <toolbox monitor="true">
   <label text="My tools" id="mytools_label" />
   <section id="mytools" name="All of my tools">
-    <tool file="proto/mytools/MyFirstTool.xml" />
+    <tool file="proto/wp2/MyFirstTool.xml" />
   </section>
   <label text="Galaxy tools" id="galaxy_label" />
   <section id="getext" name="Get Data">
