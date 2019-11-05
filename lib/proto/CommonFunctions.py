@@ -4,7 +4,7 @@ import urllib
 from collections import OrderedDict
 from numbers import Number
 
-from proto.CommonConstants import THOUSANDS_SEPARATOR
+from proto.CommonConstants import THOUSANDS_SEPARATOR, ALLOWED_CHARS
 from proto.config.Config import OUTPUT_PRECISION
 from proto.config.Security import galaxySecureEncodeId, galaxySecureDecodeId, \
     GALAXY_SECURITY_HELPER_OBJ
@@ -335,3 +335,34 @@ def makeUnicodeIfString(obj):
         return obj.decode('utf-8')
     except (UnicodeDecodeError, UnicodeEncodeError, AttributeError):
         return unicode(obj)
+
+
+def urlDecodePhrase(phrase, unquotePlus=False):
+    if unquotePlus:
+        decoded = urllib.unquote_plus(phrase)
+    else:
+        decoded = urllib.unquote(phrase)
+
+    try:
+        try:
+            decoded.decode('ascii')
+            return decoded
+        except (UnicodeDecodeError, UnicodeEncodeError):
+            return decoded.decode('utf-8')
+    except (UnicodeDecodeError, UnicodeEncodeError):
+        return decoded
+
+def formatPhraseWithCorrectChrUsage(phrase, useUrlEncoding=True, notAllowedChars=''):
+    corrected = ''
+    for char in phrase:
+        if char not in ALLOWED_CHARS or char in notAllowedChars:
+            if useUrlEncoding:
+                if isinstance(phrase, unicode):
+                    char = char.encode('utf-8')
+                for byte in char:
+                    if not isinstance(byte, int):
+                        byte = ord(byte)
+                    corrected += '%' + '{:0>2X}'.format(byte)
+        else:
+            corrected += char
+    return corrected
