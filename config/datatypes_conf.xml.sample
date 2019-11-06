@@ -640,6 +640,10 @@
 
   <!-- Galaxy ProTo datatypes -->
     <datatype extension="customhtml" type="galaxy.datatypes.images:Html" display_in_upload="false" subclass="true"/>
+    <datatype extension="gsuite.zip" type="galaxy.datatypes.binary:CompressedArchive" display_in_upload="true" mimetype="application/octet-stream" subclass="true"/>
+    <datatype extension="gsuite.tar" type="galaxy.datatypes.binary:CompressedArchive" display_in_upload="true" mimetype="application/octet-stream" subclass="true"/>
+    <datatype extension="gsuite" type="galaxy.datatypes.tabular:Tabular" display_in_upload="true" subclass="true"/>
+    <datatype extension="gsuite_storage" type="galaxy.datatypes.images:Html" display_in_upload="false" subclass="true"/>
   </registration>
   <sniffers>
     <!--

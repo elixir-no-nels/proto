@@ -194,6 +194,58 @@ class GeneralGuiTool(object):
 
         return base_url + '&'.join(args)
 
+    @staticmethod
+    def _checkGenome(genomeChoice):
+        if genomeChoice in [None, '']:
+            return 'Please select a genome build'
+
+    @classmethod
+    def _addGSuiteFileDescription(cls, core, allowedLocations=[], allowedFileFormats=[], allowedTrackTypes=[],
+                                  disallowedGenomes=[], outputLocation='',  outputFileFormat='', outputTrackType='',
+                                  errorFile=False, alwaysShowRequirements=False, alwaysShowOutputFile=False,
+                                  minTrackCount=None, maxTrackCount=None):
+        from gsuite.GSuiteConstants import UNKNOWN, MULTIPLE
+
+        if alwaysShowRequirements or any((allowedLocations, allowedFileFormats, allowedTrackTypes, disallowedGenomes)):
+            core.divider()
+            core.smallHeader('Requirements for GSuite input file')
+
+            core.descriptionLine('Locations', ', '.join(allowedLocations) if allowedLocations else 'any', emphasize=True)
+            core.descriptionLine('File formats', ', '.join(allowedFileFormats) if allowedFileFormats else 'any', emphasize=True)
+            core.descriptionLine('Track types', ', '.join(allowedTrackTypes) if allowedTrackTypes else 'any', emphasize=True)
+
+            genomeText = 'required' if UNKNOWN in disallowedGenomes else 'optional'
+            genomeText += ', only single genome allowed' if MULTIPLE in disallowedGenomes else ', multiple genomes allowed'
+            core.descriptionLine('Genome', genomeText, emphasize=True)
+
+        if alwaysShowOutputFile or any((outputLocation, outputFileFormat, outputTrackType)):
+            core.divider()
+            core.smallHeader('Format of GSuite output file')
+
+            core.descriptionLine('Location', outputLocation if outputLocation else 'as input file', emphasize=True)
+            core.descriptionLine('File format', outputFileFormat if outputFileFormat else 'as input file', emphasize=True)
+            core.descriptionLine('Track type', outputTrackType if outputTrackType else 'as input file', emphasize=True)
+
+        if errorFile:
+            core.divider()
+            core.smallHeader('Format of GSuite error file')
+            core.paragraph('The error GSuite file contains references to all track lines '
+                           'that failed in the execution of the tool. This is a valid GSuite '
+                           'file that can be used as input in manipulation tools, if one needs to '
+                           'change the contents somehow, or used directly as a '
+                           'input in the current tool to reexecute it only on the '
+                           'failed tracks.')
+
+            core.descriptionLine('Location', allowedLocations[0] if len(allowedLocations) ==  1 else 'as input file', emphasize=True)
+            core.descriptionLine('File format', allowedFileFormats[0] if len(allowedFileFormats) == 1 else  'as input file', emphasize=True)
+            core.descriptionLine('Track type', allowedTrackTypes[0] if len(allowedTrackTypes) == 1 else  'as input file', emphasize=True)
+
+        if minTrackCount or maxTrackCount:
+            core.divider()
+            core.smallHeader('Limitations on number of tracks in input GSuites')
+
+            core.descriptionLine('Minimal number of tracks', str(minTrackCount) if minTrackCount else 'no limit', emphasize=True)
+
 
 class MultiGeneralGuiTool(GeneralGuiTool):
     @staticmethod
