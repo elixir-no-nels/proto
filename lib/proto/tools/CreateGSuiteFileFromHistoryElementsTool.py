@@ -122,7 +122,10 @@ class CreateGSuiteFileFromHistoryElementsTool(GeneralGuiTool):
 
     @staticmethod
     def getOptionsBoxHistory(prevChoices):
-        return tuple(['__multihistory__'],)
+        return tuple(['__multihistory__'] + ['gtrack', 'gtrack.gz', 'bed', 'point.bed', 'category.bed', 'valued.bed', 'wig', \
+            'targetcontrol.bedgraph', 'bedgraph', 'gff', 'gff3', 'category.gff', \
+            'narrowpeak', 'broadpeak', 'fasta', 'microarray',
+            'tsv', 'vcf', 'maf'])
 
     #@staticmethod
     #def getOptionsBox4(prevChoices):

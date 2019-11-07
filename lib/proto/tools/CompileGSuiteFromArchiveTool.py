@@ -189,7 +189,7 @@ class CompileGSuiteFromArchiveTool(GeneralGuiTool):
         # DebugUtil.insertBreakPoint(username=username, currentUser='boris.simovski@gmail.com')
 
         archive = cls._getArchiveReader(choices)
-        trackCount = sum(1 for file in archive)
+        # trackCount = sum(1 for file in archive)
 
         desc = cls._getOutputHistoryDescription(choices)
         # progressViewer = ProgressViewer([('Extract tracks', trackCount)], galaxyFn)
@@ -368,4 +368,4 @@ class CompileGSuiteFromArchiveTool(GeneralGuiTool):
         case, all all print statements are redirected to the info field of the
         history item box.
         '''
-        return 'customhtml'
+        return 'gsuite'

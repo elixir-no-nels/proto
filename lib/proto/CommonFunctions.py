@@ -428,7 +428,7 @@ def writeGSuiteHiddenTrackStorageHtml(galaxyFn):
     from proto.HtmlCore import HtmlCore
 
     core = HtmlCore()
-    core.append(core.begin())
+    core.begin()
     core.paragraph('This history element contains GSuite track data, and is hidden by default.')
     core.paragraph('If you want to access the contents of this GSuite, please use the tool: '
                    '%s, selecting '
