@@ -184,15 +184,13 @@ class CompileGSuiteFromArchiveTool(GeneralGuiTool):
         from gsuite.GSuiteArchiver import ArchiveToGalaxyGSuiteTrackIterator, \
                                                convertArchiveToGSuite
         import gsuite.GSuiteComposer as GSuiteComposer
-        # from quick.extra.ProgressViewer import ProgressViewer
-
-        # DebugUtil.insertBreakPoint(username=username, currentUser='boris.simovski@gmail.com')
+        from proto.ProgressViewer import ProgressViewer
 
         archive = cls._getArchiveReader(choices)
-        # trackCount = sum(1 for file in archive)
+        trackCount = sum(1 for file in archive)
 
         desc = cls._getOutputHistoryDescription(choices)
-        # progressViewer = ProgressViewer([('Extract tracks', trackCount)], galaxyFn)
+        progressViewer = ProgressViewer([('Extract tracks', trackCount)], galaxyFn)
 
         storeHierarchy = choices.storeHierarchy == 'Yes'
         hiddenStorageFn = cls.extraGalaxyFn[getGSuiteHistoryOutputName('storage', desc)]
@@ -200,7 +198,7 @@ class CompileGSuiteFromArchiveTool(GeneralGuiTool):
             ArchiveToGalaxyGSuiteTrackIterator(archive, hiddenStorageFn, storeHierarchy)
         writeGSuiteHiddenTrackStorageHtml(hiddenStorageFn)
 
-        gSuite = convertArchiveToGSuite(archiveToGSuiteTrackIter)
+        gSuite = convertArchiveToGSuite(archiveToGSuiteTrackIter, progressViewer)
 
         GSuiteComposer.composeToFile(gSuite,
             cls.extraGalaxyFn[getGSuiteHistoryOutputName('primary', desc)])
@@ -368,4 +366,4 @@ class CompileGSuiteFromArchiveTool(GeneralGuiTool):
         case, all all print statements are redirected to the info field of the
         history item box.
         '''
-        return 'gsuite'
+        return 'customhtml'
